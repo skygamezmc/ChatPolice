@@ -1,0 +1,78 @@
+###########################################################
+#                ChatPolice by SkyGameZ                   #
+#     The Ultimate Solution to Controlling Your Chat      #
+#                                                         #
+#                    Version: 1.0                         #
+#  -- Join https://discord.gg/jQKNTDKYmQ for support --   #
+###########################################################
+
+
+
+# Filtering
+# Filter messages containing not allowed words
+enable-filter: true
+block-entire-message: false
+filter-character: '*'
+filtered-words:
+  - 'fuck'
+  - 'shit'
+  - 'bitch'
+  - 'ass'
+  - 'asshole'
+  - 'motherfucker'
+  - 'bastard'
+  - 'whore'
+  - 'cock'
+  - 'dick'
+  - 'cunt'
+
+# Chat Cooldown
+# Set a cooldown to prevent spam (in seconds)
+enable-cooldown: true
+cooldown-time: 3
+
+# Spam Prevention
+# Block a message if its the same as the last message
+enable-spam-blocker: true
+
+# Staff Notification
+# Notify all staff online when chat abuse happens
+notify-staff: true
+
+# Discord ChatLog
+# Logs all chats to a Discord channel via webhook
+enable-discord-chatlog: false
+chat-webhook-name: 'ChatPolice'
+chat-webhook-link:
+chat-webhook-avatar: https://media.discordapp.net/attachments/1120508527161655346/1120508578114048000/megaphone.png
+
+# Clear Chat
+# Clears the entire chat
+staff-bypass-clearchat: true
+
+
+# All Permissions
+permissions:
+  reload: 'chatpolice.staff.reload'
+  bypass-filter: 'chatpolice.bypass.filter'
+  bypass-spam: 'chatpolice.bypass.spam'
+  bypass-cooldown: 'chatpolice.bypass.cooldown'
+  bypass-lockdown: 'chatpolice.bypass.lockdown'
+  staff: 'chatpolice.staff'
+  staff-notification: 'chatpolice.staff.notification'
+  lockdown: 'chatpolice.staff.lockdown'
+  clearchat: 'chatpolice.staff.clearchat'
+
+# All messages
+messages:
+  cooldown: '&7[&6Chat&ePolice&7] &cYour on cooldown!'
+  message-blocked: '&7[&6Chat&ePolice&7] &cYour message contains blocked words and has been blocked!'
+  reloaded: '&7[&6Chat&ePolice&7] &aChatPolice has reloaded successfully!'
+  no-permission: '&7[&6Chat&ePolice&7] &cYou do not have permission to use this command!'
+  spam: '&7[&6Chat&ePolice&7] &cYou already sent this message last time!'
+  clearchat: '&7[&6Chat&ePolice&7] &aChat has been cleared!'
+  locked-chat: '&7[&6Chat&ePolice&7] &aChat has been locked'
+  unlocked-chat: '&7[&6Chat&ePolice&7] &aChat has been unlocked'
+  chat-denied-locked: '&7[&6Chat&ePolice&7] &cThe chat is currently locked!'
+
+

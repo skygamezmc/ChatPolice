@@ -1,0 +1,13 @@
+name: ChatPolice
+version: '${project.version}'
+main: me.skygamez.chatpolice.ChatPolice
+api-version: "1.20"
+authors: [SkyGameZ]
+description: Provides better control over your servers chat
+commands:
+  chatpolice:
+    description: chatpolice
+  clearchat:
+    description: clearchat
+  chatlockdown:
+    description: chatlockdown
