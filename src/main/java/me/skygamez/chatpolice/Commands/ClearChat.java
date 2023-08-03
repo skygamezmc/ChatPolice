@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import me.clip.placeholderapi.PlaceholderAPI;
 
 public class ClearChat implements CommandExecutor {
 
@@ -23,8 +24,7 @@ public class ClearChat implements CommandExecutor {
                     for (int i = 0; i < 100; i++) {
                         player.sendMessage("");
                     }
-                    player.sendMessage(chatPolice.config.getString("messages.clearchat").replace('&', '§'));
-
+                    player.sendMessage(chatPolice.placeholders.setPlaceholders(player, chatPolice.config.getString("messages.clearchat").replace('&', '§')));
                 }
             }
         }

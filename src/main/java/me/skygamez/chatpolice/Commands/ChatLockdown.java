@@ -20,10 +20,10 @@ public class ChatLockdown implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (chatPolice.ChatLocked) {
             chatPolice.ChatLocked = false;
-            sender.sendMessage(chatPolice.config.getString("messages.unlocked-chat").replace('&', '§'));
+            sender.sendMessage(chatPolice.placeholders.setPlaceholders(sender.getServer().getPlayer(sender.getName()), chatPolice.config.getString("messages.unlocked-chat").replace('&', '§')));
         } else {
             chatPolice.ChatLocked = true;
-            sender.sendMessage(chatPolice.config.getString("messages.locked-chat").replace('&', '§'));
+            sender.sendMessage(chatPolice.placeholders.setPlaceholders(sender.getServer().getPlayer(sender.getName()), chatPolice.config.getString("messages.locked-chat").replace('&', '§')));
         }
         return false;
     }
