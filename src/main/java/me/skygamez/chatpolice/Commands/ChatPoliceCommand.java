@@ -23,7 +23,7 @@ public class ChatPoliceCommand implements CommandExecutor {
 
         if (args[0].equals("reload")) {
             chatPolice.LoadConfiguration();
-            sender.sendMessage(chatPolice.config.getString("messages.reloaded").replace('&', '§'));
+            sender.sendMessage(chatPolice.placeholders.setPlaceholders(sender.getServer().getPlayer(sender.getName()), chatPolice.config.getString("messages.reloaded").replace('&', '§')));
             return true;
         }
         return false;

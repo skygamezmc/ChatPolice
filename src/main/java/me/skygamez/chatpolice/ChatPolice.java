@@ -5,7 +5,9 @@ import me.skygamez.chatpolice.Commands.ChatPoliceCommand;
 import me.skygamez.chatpolice.Commands.ClearChat;
 import me.skygamez.chatpolice.Events.OnChatSend;
 import me.skygamez.chatpolice.Metrics.Metrics;
+import me.skygamez.chatpolice.Utils.PlaceholderAPI.Placeholders;
 import me.skygamez.chatpolice.Utils.Webhook.WebhookPresets;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +22,10 @@ public final class ChatPolice extends JavaPlugin {
     public WebhookPresets webhookPresets;
 
     public boolean ChatLocked;
+
+    public boolean hasPlaceholderAPI = false;
+
+    public Placeholders placeholders;
 
     @Override
     public void onEnable() {
@@ -45,7 +51,13 @@ public final class ChatPolice extends JavaPlugin {
         this.getCommand("chatlockdown").setPermission(config.getString("permissions.lockdown"));
         this.getCommand("chatlockdown").setPermissionMessage(config.getString("messages.no-permission"));
 
+        placeholders = new Placeholders(this);
+
         webhookPresets = new WebhookPresets(this);
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            hasPlaceholderAPI = true;
+        }
 
         int pluginId = 18801; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(this, pluginId);
@@ -67,8 +79,6 @@ public final class ChatPolice extends JavaPlugin {
         this.reloadConfig();
         config = this.getConfig();
         filteredWords.clear();
-        for (String key : config.getStringList("filtered-words")) {
-            filteredWords.add(key);
-        }
+        filteredWords.addAll(config.getStringList("filtered-words"));
     }
 }

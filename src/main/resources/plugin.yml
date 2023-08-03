@@ -4,6 +4,8 @@ main: me.skygamez.chatpolice.ChatPolice
 api-version: "1.20"
 authors: [SkyGameZ]
 description: Provides better control over your servers chat
+softdepend:
+  - PlaceholderAPI
 commands:
   chatpolice:
     description: chatpolice
