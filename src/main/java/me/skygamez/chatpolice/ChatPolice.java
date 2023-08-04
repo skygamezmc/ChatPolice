@@ -39,17 +39,17 @@ public final class ChatPolice extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnChatSend(this), this);
 
         //Command Setup
-        this.getCommand("chatpolice").setExecutor(new ChatPoliceCommand(this));
-        this.getCommand("chatpolice").setPermission(config.getString("permissions.reload"));
-        this.getCommand("chatpolice").setPermissionMessage(config.getString("messages.no-permission"));
+        getCommand("chatpolice").setExecutor(new ChatPoliceCommand(this));
+        getCommand("chatpolice").setPermission(config.getString("permissions.reload"));
+        getCommand("chatpolice").setPermissionMessage(config.getString("messages.no-permission"));
 
-        this.getCommand("clearchat").setExecutor(new ClearChat(this));
-        this.getCommand("clearchat").setPermission(config.getString("permissions.clearchat"));
-        this.getCommand("clearchat").setPermissionMessage(config.getString("messages.no-permission"));
+        getCommand("clearchat").setExecutor(new ClearChat(this));
+        getCommand("clearchat").setPermission(config.getString("permissions.clearchat"));
+        getCommand("clearchat").setPermissionMessage(config.getString("messages.no-permission"));
 
-        this.getCommand("chatlockdown").setExecutor(new ChatLockdown(this));
-        this.getCommand("chatlockdown").setPermission(config.getString("permissions.lockdown"));
-        this.getCommand("chatlockdown").setPermissionMessage(config.getString("messages.no-permission"));
+        getCommand("chatlockdown").setExecutor(new ChatLockdown(this));
+        getCommand("chatlockdown").setPermission(config.getString("permissions.lockdown"));
+        getCommand("chatlockdown").setPermissionMessage(config.getString("messages.no-permission"));
 
         placeholders = new Placeholders(this);
 
@@ -66,8 +66,6 @@ public final class ChatPolice extends JavaPlugin {
         getLogger().info("&7 ChatPolice has started successfully!");
         getLogger().info("&7 Version: " + getDescription().getVersion());
         getLogger().info("§e----§6----------------------------------§e----");
-
-
     }
 
     @Override
@@ -76,8 +74,8 @@ public final class ChatPolice extends JavaPlugin {
     }
 
     public void LoadConfiguration() {
-        this.reloadConfig();
-        config = this.getConfig();
+        reloadConfig();
+        config = getConfig();
         filteredWords.clear();
         filteredWords.addAll(config.getStringList("filtered-words"));
     }
