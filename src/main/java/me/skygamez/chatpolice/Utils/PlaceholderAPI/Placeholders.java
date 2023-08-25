@@ -13,7 +13,7 @@ public class Placeholders {
     }
 
     public String setPlaceholders(Player player, String text) {
-        if (chatPolice.hasPlaceholderAPI) {
+        if (chatPolice.isHasPlaceholderAPI()) {
             return PlaceholderAPI.setPlaceholders(player, text);
         }
 

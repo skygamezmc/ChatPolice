@@ -18,13 +18,13 @@ public class ClearChat implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (chatPolice.config.getBoolean("staff-bypass-clearchat")) {
+        if (chatPolice.getConfiguration().getBoolean("staff-bypass-clearchat")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (!player.hasPermission(chatPolice.config.getString("permissions.staff"))) {
+                if (!player.hasPermission(chatPolice.getConfiguration().getString("permissions.staff"))) {
                     for (int i = 0; i < 100; i++) {
                         player.sendMessage("");
                     }
-                    player.sendMessage(chatPolice.placeholders.setPlaceholders(player, chatPolice.config.getString("messages.clearchat").replace('&', '§')));
+                    player.sendMessage(chatPolice.getPlaceholders().setPlaceholders(player, chatPolice.getConfiguration().getString("messages.clearchat").replace('&', '§')));
                 }
             }
         }

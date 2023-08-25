@@ -16,9 +16,9 @@ public class WebhookPresets {
     }
 
     public void NewChat(Player player, String message) {
-        DiscordWebhook webhook = new DiscordWebhook(chatPolice.config.getString("chat-webhook-link"));
-        webhook.setUsername(chatPolice.config.getString("chat-webhook-name"));
-        webhook.setAvatarUrl(chatPolice.config.getString("chat-webhook-avatar"));
+        DiscordWebhook webhook = new DiscordWebhook(chatPolice.getConfiguration().getString("chat-webhook-link"));
+        webhook.setUsername(chatPolice.getConfiguration().getString("chat-webhook-name"));
+        webhook.setAvatarUrl(chatPolice.getConfiguration().getString("chat-webhook-avatar"));
         webhook.setContent(player.getName() + ": " + message);
         try {
             webhook.execute();

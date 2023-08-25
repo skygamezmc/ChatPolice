@@ -1,6 +1,8 @@
+me\skygamez\chatpolice\Utils\updatechecker\UpdateChecker.class
 me\skygamez\chatpolice\Utils\Webhook\DiscordWebhook$1.class
 me\skygamez\chatpolice\ChatPolice.class
 me\skygamez\chatpolice\Utils\Webhook\DiscordWebhook$EmbedObject.class
+me\skygamez\chatpolice\Utils\PlaceholderAPI\Placeholders.class
 me\skygamez\chatpolice\Utils\Webhook\DiscordWebhook$EmbedObject$Author.class
 me\skygamez\chatpolice\Commands\ChatLockdown.class
 me\skygamez\chatpolice\Metrics\Metrics$JsonObjectBuilder.class
@@ -16,6 +18,7 @@ me\skygamez\chatpolice\Metrics\Metrics$DrilldownPie.class
 me\skygamez\chatpolice\Utils\Webhook\WebhookPresets.class
 me\skygamez\chatpolice\Metrics\Metrics$AdvancedBarChart.class
 me\skygamez\chatpolice\Metrics\Metrics$SimplePie.class
+me\skygamez\chatpolice\Utils\formats\Colors.class
 me\skygamez\chatpolice\Metrics\Metrics$MetricsBase.class
 me\skygamez\chatpolice\Metrics\Metrics$CustomChart.class
 me\skygamez\chatpolice\Utils\Webhook\DiscordWebhook$EmbedObject$Thumbnail.class

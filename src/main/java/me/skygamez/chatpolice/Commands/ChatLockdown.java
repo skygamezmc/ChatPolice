@@ -1,6 +1,7 @@
 package me.skygamez.chatpolice.Commands;
 
 import me.skygamez.chatpolice.ChatPolice;
+import me.skygamez.chatpolice.Utils.formats.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,12 +19,12 @@ public class ChatLockdown implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (chatPolice.ChatLocked) {
-            chatPolice.ChatLocked = false;
-            sender.sendMessage(chatPolice.placeholders.setPlaceholders(sender.getServer().getPlayer(sender.getName()), chatPolice.config.getString("messages.unlocked-chat").replace('&', '§')));
+        if (chatPolice.isChatLocked()) {
+            chatPolice.setChatLocked(true);
+            sender.sendMessage(chatPolice.getPlaceholders().setPlaceholders(sender.getServer().getPlayer(sender.getName()), Colors.format(chatPolice.getConfiguration().getString("messages.unlocked-chat"))));
         } else {
-            chatPolice.ChatLocked = true;
-            sender.sendMessage(chatPolice.placeholders.setPlaceholders(sender.getServer().getPlayer(sender.getName()), chatPolice.config.getString("messages.locked-chat").replace('&', '§')));
+            chatPolice.setChatLocked(false);
+            sender.sendMessage(chatPolice.getPlaceholders().setPlaceholders(sender.getServer().getPlayer(sender.getName()), Colors.format(chatPolice.getConfiguration().getString("messages.locked-chat"))));
         }
         return false;
     }

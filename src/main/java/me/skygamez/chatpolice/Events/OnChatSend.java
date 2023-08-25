@@ -1,6 +1,7 @@
 package me.skygamez.chatpolice.Events;
 
 import me.skygamez.chatpolice.ChatPolice;
+import me.skygamez.chatpolice.Utils.formats.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,40 +31,39 @@ public class OnChatSend implements Listener {
     public void OnAsyncPlayerChat(AsyncPlayerChatEvent e) {
 
         boolean messageBlocked = false;
+        String originalMessage = e.getMessage();
+        String filteredMessage = e.getMessage();
 
-        if (chatPolice.ChatLocked && !e.getPlayer().hasPermission(chatPolice.config.getString("permissions.bypass-lockdown"))) {
+        if (chatPolice.isChatLocked() && !e.getPlayer().hasPermission(chatPolice.getConfiguration().getString("permissions.bypass-lockdown"))) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(chatPolice.placeholders.setPlaceholders(e.getPlayer(), chatPolice.config.getString("messages.chat-denied-locked").replace('&', '§')));
+            e.getPlayer().sendMessage(chatPolice.getPlaceholders().setPlaceholders(e.getPlayer(), Colors.format(chatPolice.getConfiguration().getString("messages.chat-denied-locked"))));
             messageBlocked = true;
             e.setCancelled(true);
         }
 
         if (cooldown.contains(e.getPlayer())) {
-            e.getPlayer().sendMessage(chatPolice.placeholders.setPlaceholders(e.getPlayer(), chatPolice.config.getString("messages.cooldown").replace('&', '§')));
+            e.getPlayer().sendMessage(chatPolice.getPlaceholders().setPlaceholders(e.getPlayer(), Colors.format(chatPolice.getConfiguration().getString("messages.cooldown"))));
             messageBlocked = true;
             e.setCancelled(true);
         }
 
-        if (!e.getPlayer().hasPermission(chatPolice.config.getString("permissions.bypass-spam"))) {
+        if (!e.getPlayer().hasPermission(chatPolice.getConfiguration().getString("permissions.bypass-spam"))) {
             if (LastMessage.containsKey(e.getPlayer())) {
                 if (LastMessage.get(e.getPlayer()).equals(e.getMessage())) {
                     e.setCancelled(true);
-                    e.getPlayer().sendMessage(chatPolice.placeholders.setPlaceholders(e.getPlayer(), chatPolice.config.getString("messages.spam").replace('&', '§')));
+                    e.getPlayer().sendMessage(chatPolice.getPlaceholders().setPlaceholders(e.getPlayer(), Colors.format(chatPolice.getConfiguration().getString("messages.spam"))));
                     messageBlocked = true;
                 }
                 LastMessage.remove(e.getPlayer());
             }
             LastMessage.put(e.getPlayer(), e.getMessage());
         }
+        if (!e.getPlayer().hasPermission(chatPolice.getConfiguration().getString("permissions.bypass-filter")) && !messageBlocked) {
+            if (chatPolice.getConfiguration().getBoolean("enable-filter")) {
 
-        String filteredMessage = e.getMessage();
-        if (!e.getPlayer().hasPermission(chatPolice.config.getString("permissions.bypass-filter")) && !messageBlocked) {
-            if (chatPolice.config.getBoolean("enable-filter")) {
-
-                filteredMessage = e.getMessage();
                 boolean messageFiltered = false;
 
-                for (String filterCheck : chatPolice.filteredWords) {
+                for (String filterCheck : chatPolice.getFilteredWords()) {
                     String escapedFilterCheck = Pattern.quote(filterCheck);
 
                     Pattern wordPattern = Pattern.compile("(?i)" + escapedFilterCheck.replaceAll("\\s+", "\\\\s*").replaceAll("-", "\\\\-*"));
@@ -75,13 +75,13 @@ public class OnChatSend implements Listener {
                         filteredMessage = matcher.replaceAll(getCensorString(filterCheck));
                     }
                 }
-                if (chatPolice.config.getBoolean("notify-staff") && messageFiltered) {
-                    Bukkit.broadcast(ChatColor.GOLD + "User: " + e.getPlayer().getName() + " Sent a filtered message saying: " + e.getMessage(), chatPolice.config.getString("permissions.staff-notification"));
+                if (chatPolice.getConfiguration().getBoolean("notify-staff") && messageFiltered) {
+                    Bukkit.broadcast(ChatColor.GOLD + "User: " + e.getPlayer().getName() + " Sent a filtered message saying: " + e.getMessage(), chatPolice.getConfiguration().getString("permissions.staff-notification"));
                 }
-                if (chatPolice.config.getBoolean("block-entire-message") && messageFiltered)  {
+                if (chatPolice.getConfiguration().getBoolean("block-entire-message") && messageFiltered)  {
                     messageBlocked = true;
                     e.setCancelled(true);
-                    e.getPlayer().sendMessage(chatPolice.placeholders.setPlaceholders(e.getPlayer(), chatPolice.config.getString("messages.message-blocked").replace('&', '§')));
+                    e.getPlayer().sendMessage(chatPolice.getPlaceholders().setPlaceholders(e.getPlayer(), Colors.format(chatPolice.getConfiguration().getString("messages.message-blocked"))));
                 } else {
                     e.setMessage(filteredMessage);
                 }
@@ -90,16 +90,20 @@ public class OnChatSend implements Listener {
         }
 
 
-        if (chatPolice.config.getBoolean("enable-discord-chatlog") && !messageBlocked) {
-            chatPolice.webhookPresets.NewChat(e.getPlayer(), filteredMessage);
+        if (chatPolice.getConfiguration().getBoolean("enable-discord-chatlog") && !messageBlocked) {
+            if (chatPolice.getConfiguration().getBoolean("send-censored-message")) {
+                chatPolice.getWebhookPresets().NewChat(e.getPlayer(), filteredMessage);
+            } else {
+                chatPolice.getWebhookPresets().NewChat(e.getPlayer(), originalMessage);
+            }
         }
 
 
-        if (chatPolice.config.getBoolean("enable-cooldown") && !e.getPlayer().hasPermission(chatPolice.config.getString("permissions.bypass-cooldown")) && !messageBlocked) {
+        if (chatPolice.getConfiguration().getBoolean("enable-cooldown") && !e.getPlayer().hasPermission(chatPolice.getConfiguration().getString("permissions.bypass-cooldown")) && !messageBlocked) {
             cooldown.add(e.getPlayer());
             Bukkit.getScheduler().runTaskLater(chatPolice, () -> {
                 cooldown.remove(e.getPlayer());
-            }, chatPolice.config.getInt("cooldown-time") * 20);
+            }, chatPolice.getConfiguration().getInt("cooldown-time") * 20);
         }
 
 
@@ -111,7 +115,7 @@ public class OnChatSend implements Listener {
         // Generate the censor string based on the length of the word
         StringBuilder censor = new StringBuilder();
         for (int i = 0; i < word.length(); i++) {
-            censor.append(chatPolice.config.getString("filter-character"));
+            censor.append(chatPolice.getConfiguration().getString("filter-character"));
         }
         return censor.toString();
     }

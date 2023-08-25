@@ -1,6 +1,7 @@
 package me.skygamez.chatpolice.Commands;
 
 import me.skygamez.chatpolice.ChatPolice;
+import me.skygamez.chatpolice.Utils.formats.Colors;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +24,7 @@ public class ChatPoliceCommand implements CommandExecutor {
 
         if (args[0].equals("reload")) {
             chatPolice.LoadConfiguration();
-            sender.sendMessage(chatPolice.placeholders.setPlaceholders(sender.getServer().getPlayer(sender.getName()), chatPolice.config.getString("messages.reloaded").replace('&', '§')));
+            sender.sendMessage(chatPolice.getPlaceholders().setPlaceholders(sender.getServer().getPlayer(sender.getName()), Colors.format(chatPolice.getConfiguration().getString("messages.reloaded"))));
             return true;
         }
         return false;

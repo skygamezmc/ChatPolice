@@ -1,5 +1,7 @@
 package me.skygamez.chatpolice;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.skygamez.chatpolice.Commands.ChatLockdown;
 import me.skygamez.chatpolice.Commands.ChatPoliceCommand;
 import me.skygamez.chatpolice.Commands.ClearChat;
@@ -7,25 +9,37 @@ import me.skygamez.chatpolice.Events.OnChatSend;
 import me.skygamez.chatpolice.Metrics.Metrics;
 import me.skygamez.chatpolice.Utils.PlaceholderAPI.Placeholders;
 import me.skygamez.chatpolice.Utils.Webhook.WebhookPresets;
+import me.skygamez.chatpolice.Utils.formats.Colors;
+import me.skygamez.chatpolice.Utils.updatechecker.UpdateChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class ChatPolice extends JavaPlugin {
 
-    public Configuration config;
-    public List<String> filteredWords = new ArrayList<>();
+    @Getter
+    private Configuration configuration;
 
-    public WebhookPresets webhookPresets;
+    @Getter
+    private List<String> filteredWords = new ArrayList<>();
 
-    public boolean ChatLocked;
+    @Getter
+    private WebhookPresets webhookPresets;
 
-    public boolean hasPlaceholderAPI = false;
+    @Getter
+    @Setter
+    private boolean ChatLocked;
 
-    public Placeholders placeholders;
+    @Getter
+    private boolean hasPlaceholderAPI = false;
+
+    @Getter
+    private Placeholders placeholders;
 
     @Override
     public void onEnable() {
@@ -40,16 +54,16 @@ public final class ChatPolice extends JavaPlugin {
 
         //Command Setup
         getCommand("chatpolice").setExecutor(new ChatPoliceCommand(this));
-        getCommand("chatpolice").setPermission(config.getString("permissions.reload"));
-        getCommand("chatpolice").setPermissionMessage(config.getString("messages.no-permission"));
+        getCommand("chatpolice").setPermission(configuration.getString("permissions.reload"));
+        getCommand("chatpolice").setPermissionMessage(configuration.getString("messages.no-permission"));
 
         getCommand("clearchat").setExecutor(new ClearChat(this));
-        getCommand("clearchat").setPermission(config.getString("permissions.clearchat"));
-        getCommand("clearchat").setPermissionMessage(config.getString("messages.no-permission"));
+        getCommand("clearchat").setPermission(configuration.getString("permissions.clearchat"));
+        getCommand("clearchat").setPermissionMessage(configuration.getString("messages.no-permission"));
 
         getCommand("chatlockdown").setExecutor(new ChatLockdown(this));
-        getCommand("chatlockdown").setPermission(config.getString("permissions.lockdown"));
-        getCommand("chatlockdown").setPermissionMessage(config.getString("messages.no-permission"));
+        getCommand("chatlockdown").setPermission(configuration.getString("permissions.lockdown"));
+        getCommand("chatlockdown").setPermissionMessage(configuration.getString("messages.no-permission"));
 
         placeholders = new Placeholders(this);
 
@@ -59,13 +73,27 @@ public final class ChatPolice extends JavaPlugin {
             hasPlaceholderAPI = true;
         }
 
-        int pluginId = 18801; // <-- Replace with the id of your plugin!
+        int pluginId = 18801;
         Metrics metrics = new Metrics(this, pluginId);
 
-        getLogger().info("§e----§6----------------------------------§e----");
-        getLogger().info("&7 ChatPolice has started successfully!");
-        getLogger().info("&7 Version: " + getDescription().getVersion());
-        getLogger().info("§e----§6----------------------------------§e----");
+        try {
+            UpdateChecker updateChecker = new UpdateChecker(this);
+            if (updateChecker.updateRequired()) {
+                getLogger().info(Colors.format("§e----§6----------------------------------§e----"));
+                getLogger().info(Colors.format("&7 ChatPolice has started successfully!"));
+                getLogger().info(Colors.format("&7 Version: " + getDescription().getVersion()));
+                getLogger().info(Colors.format("§e----§6----------------------------------§e----"));
+            } else {
+                getLogger().info(Colors.format("§e----§6----------------------------------§e----"));
+                getLogger().info(Colors.format("&7 ChatPolice has started successfully!"));
+                getLogger().info(Colors.format("&a          Update available!"));
+                getLogger().info(Colors.format("§e----§6----------------------------------§e----"));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @Override
@@ -75,8 +103,8 @@ public final class ChatPolice extends JavaPlugin {
 
     public void LoadConfiguration() {
         reloadConfig();
-        config = getConfig();
+        configuration = getConfig();
         filteredWords.clear();
-        filteredWords.addAll(config.getStringList("filtered-words"));
+        filteredWords.addAll(configuration.getStringList("filtered-words"));
     }
 }

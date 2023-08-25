@@ -42,6 +42,7 @@ notify-staff: true
 # Discord ChatLog
 # Logs all chats to a Discord channel via webhook
 enable-discord-chatlog: false
+send-censored-message: true
 chat-webhook-name: 'ChatPolice'
 chat-webhook-link:
 chat-webhook-avatar: https://media.discordapp.net/attachments/1120508527161655346/1120508578114048000/megaphone.png
